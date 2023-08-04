@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>How to Design Login & Registration Form Transition</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="loginstyle.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='loginstyle.css') }}">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700,800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="cont">
+    <div class="form sign-in">
+      <h2>Sign In</h2>
+      <form action="/admin_page" autocomplete="on" method = "POST" enctype="multipart/form-data">
+      <label >
+        <span><h3>User Name</h3></span>
+        <input type="text" name="Username" placeholder="Username">
+      </label>
+      <label>
+        <span><h3>Password</h3></span>
+        <input type="password" name="password" placeholder="Password">
+      </label>
+      <button class="submit" type="submit">Sign In</button>
+    </form>
+      <div class="social-media">
+        <ul>
+          <li><img src="images/facebook.png"></li>
+          <li><img src="images/linkedin.png"></li>
+          <li><img src="images/instagram.png"></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-cont">
+      <div class="img">
+        <div class="img-text m-up">
+          <h2>---Wheels---</h2>
+          <h4>Employees only!</h4>
+        </div>
+        <div class="img-text m-in">
+          <h2>One of us?</h2>
+          <p>If you are already an employee,just check your details here!</p>
+        </div>
+        <div class="img-btn">
+          <span class="m-up">Details</span>
+          <span class="m-in">Sign In</span>
+        </div>
+      </div>
+      <center>
+      <div class="get-btn">
+        <h2>Click here to check Employee Details</h2>
+        <a href="{{url_for('/goget')}}"><button>Get Details</button></a>
+      </div>
+     </center>
+
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="{{ url_for('static', filename='loginscript.js') }}"></script>
+</body>
+</html>

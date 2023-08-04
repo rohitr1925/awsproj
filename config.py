@@ -1,0 +1,8 @@
+customhost = "employee.cewygmukmau7.us-east-1.rds.amazonaws.com"
+customuser = "wildlings"
+custompass = "wildlings123"
+customdb = "employee"
+custombucket = "employees3"
+customregion = "us-east-1"
+admin_name="Admin"
+admin_pass="myadmin123"

@@ -1,0 +1,34 @@
+	<!DOCTYPE html>
+<html>
+<head>
+	<title>Get Employee Information</title>
+	<style>
+		body{
+			background-image:{{ url_for('static', filename='img/124059.jpg') }};
+		}
+	</style>
+</head>
+<center>
+	<font color="white" size="5" style="font-family: avenir">
+
+		<h1 style="color: #ffffff">Employee Information</h1>
+
+		<body bgcolor="black">
+
+			<form action="/fetchdata" autocomplete="on" method="POST">
+
+				<h2 style="color: rgb(252, 251, 251)">Enter Employee ID</h2>
+
+		  		Employee ID:<br> <input style="height:25px;font-size:14pt;" type="number" name="emp_id" autofocus size="40"><br><br>
+
+
+		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">FETCH INFO</button><br><br>
+
+		  		<button type="submit" formaction="http://3.82.29.129/" style="background: rgb(90, 88, 88)	; height: 45px; width: 200px; color: rgb(233, 231, 231); size: 5; font:oblique;" method="GET">GO TO UPDATE DATABASE PAGE</button>
+
+			</form>
+
+		</body>
+	</font>
+</center>
+</html>
