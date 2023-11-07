@@ -18,8 +18,10 @@ db_conn = connections.Connection(
     db=customdb
 
 )
+
 output = {}
 table = 'employee'
+
 
 @app.route("/login")
 def login():
@@ -43,10 +45,9 @@ def admin_page():
     if request.method == 'POST':
         user_name = request.form.get('username')
         passw = request.form.get('pass')
-        
         if user_name == admin_name and passw == admin_pass:
             user = {
-                'User': user_name,
+                'user': user_name,
                 'Password': passw
             }
             session['user'] = user
@@ -63,16 +64,15 @@ def protected():
             return "Access denied."
     except Exception as e:
         return str(e)
-    
+
 @app.route("/fetchdata",methods=['Get','POST'])
 def fetchdata():
-    
-    id=request.form.get('emp_id')
-    query = "SELECT * FROM %s WHERE empid=%s"
-    cursor.execute(query,(customdb,id) )
-    cursor.execute(query,id )
-    result = cursor.fetchone()
-    return render_template("GetEmpOutput.html",id=result[0],fname=result[1],lname=result[2],interest=result[3],location=result[4])
+         id=request.form['emp_id']
+         query = "SELECT * FROM employee WHERE empid=%s"
+         cursor=db_conn.cursor()
+         cursor.execute(query,id )
+         result = cursor.fetchone()
+         return render_template("GetEmpOutput.html",id=result[0],fname=result[1],lname=result[2],interest=result[3],location=result[4],image_url=result[5])
 
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
@@ -83,24 +83,24 @@ def AddEmp():
     location = request.form['location']
     emp_image_file = request.files['emp_image_file']
 
-    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
+    insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     if emp_image_file.filename == "":
         return "Please select a file"
 
     try:
-
-        cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
-        db_conn.commit()
         emp_name = "" + first_name + " " + last_name
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
-        s3 = boto3.resource('s3')
-
         try:
             print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
+            response = s3.put_object(
+        Bucket=custombucket,
+        Key=emp_image_file_name_in_s3,
+            Body=emp_image_file,
+            ACL='public-read'
+        )
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
             s3_location = (bucket_location['LocationConstraint'])
 
@@ -113,13 +113,13 @@ def AddEmp():
                 s3_location,
                 custombucket,
                 emp_image_file_name_in_s3)
-
+            cursor.execute(insert_sql, (emp_id, first_name, last_name,  pri_skill, location, object_url))
+            db_conn.commit()
         except Exception as e:
             return str(e)
 
     finally:
         cursor.close()
-
     print("all modification done...")
     return render_template('AddEmpOutput.html', name=emp_name)
 
